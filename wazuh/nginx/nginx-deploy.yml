@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: wazuh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+      name: nginx
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: nginx-conf
+        - name: pass
+          secret:
+            secretName: nginx-pass
+        - name: cert
+          configMap:
+            name: nginx-cert
+        - name: key
+          configMap:
+            name: nginx-key
+      containers:
+        - name: nginx
+          image: 'nginx:stable'
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+            - name: pass
+              mountPath: /etc/nginx/ssl/nginx-access.pass
+              subPath: nginx-access.pass
+              readOnly: true
+            - name: cert
+              mountPath: /etc/nginx/ssl/nginx-access.pem
+              subPath: nginx-access.pem
+              readOnly: true
+            - name: key
+              mountPath: /etc/nginx/ssl/privkey.pem
+              subPath: privkey.pem
+              readOnly: true
+          ports:
+            - containerPort: 1514
+              name: manager-comm
+            - containerPort: 1515
+              name: manager-reg
+            - containerPort: 443
+              name: dashboard-https

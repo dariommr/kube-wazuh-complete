@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mnt1
+  labels:
+    type: local
+spec:
+  storageClassName: wazuh-storage
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/kube-storage/mnt1"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - kube-worker
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mnt2
+  labels:
+    type: local
+spec:
+  storageClassName: wazuh-storage
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/kube-storage/mnt2"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - kube-worker
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mnt3
+  labels:
+    type: local
+spec:
+  storageClassName: wazuh-storage
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/kube-storage/mnt3"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - kube-worker
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-mnt4
+  labels:
+    type: local
+spec:
+  storageClassName: wazuh-storage
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/kube-storage/mnt4"
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - kube-worker

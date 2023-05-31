@@ -1,0 +1,26 @@
+
+server.host: 0.0.0.0
+server.port: 5601
+opensearch.hosts: https://indexer:9200
+opensearch.ssl.verificationMode: none
+opensearch.requestHeadersWhitelist: [ authorization,securitytenant ]
+opensearch_security.multitenancy.enabled: false
+opensearch_security.readonly_mode.roles: ["kibana_read_only"]
+server.ssl.enabled: true
+server.ssl.key: "/usr/share/wazuh-dashboard/config/certs/key.pem"
+server.ssl.certificate: "/usr/share/wazuh-dashboard/config/certs/cert.pem"
+opensearch.ssl.certificateAuthorities: ["/usr/share/wazuh-dashboard/config/certs/root-ca.pem"]
+uiSettings.overrides.defaultRoute: /app/wazuh?security_tenant=global
+
+opensearch_security.session.ttl: 90000
+opensearch_security.cookie.ttl: 90000
+opensearch_security.cookie.secure: true
+opensearch_security.session.keepalive: true
+opensearch.shardTimeout: 18000
+opensearch.requestTimeout: 18000
+server.maxPayloadBytes: 1024000
+server.keepaliveTimeout: 18000
+
+# Enable the following lines when working with SAML Authentication
+#opensearch_security.auth.type: "saml"
+#server.xsrf.whitelist: ["/_plugins/_security/saml/acs", "/_plugins/_security/saml/logout", "/_opendistro/_security/saml/acs", "/_opendistro/_security/saml/logout", "/_opendistro/_security/saml/acs/idpinitiated"]

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wazuh-smtp
+  namespace: wazuh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wazuh-smtp
+  template:
+    metadata:
+      labels:
+        app: wazuh-smtp
+      name: wazuh-smtp
+    spec:
+      volumes:
+        - name: cert
+          configMap:
+            name: smtp-cert
+      containers:
+        - name: wazuh-smtp
+          image: 'dariommr/wazuh-postfix:latest'
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          env:
+            - name: MY_SMTP
+              value: 'smtp.gmail.com'
+            - name: MY_PORT
+              value: '587'
+            - name: MY_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: wazuh-smtp-creds
+                  key: email
+            - name: MY_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: wazuh-smtp-creds
+                  key: password
+          volumeMounts:
+            - name: cert
+              mountPath: /etc/ssl/certs/root-ca.pem
+              subPath: root-ca.pem
+              readOnly: true
+          ports:
+            - containerPort: 25
+              name: smtp
